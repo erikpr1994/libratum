@@ -10,5 +10,5 @@ module.exports = {
     ecmVersion: 12,
   },
   plugins: ['@typescript-eslint'],
-  rules: {},
+  rules: { 'no-console': 'error' },
 };
