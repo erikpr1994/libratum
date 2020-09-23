@@ -17,11 +17,7 @@ export const AppLayout = ({ children, logged }: AppLayout) => {
   return (
     <div>
       <nav>
-        <Logo
-          src={"logo/Original_Transparent.png"}
-          alt="Libratum logo"
-          height={60}
-        />
+        <Logo src={"logo/Original_Transparent.png"} alt="Libratum logo" />
         <Navigation navigation={nav} logged={logged} />
         {logged && (
           <Avatar
