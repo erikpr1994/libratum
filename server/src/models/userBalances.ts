@@ -1,8 +1,10 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
 export interface UserBalancesAttributes {
-  id?: number;
-  name: string;
+  userId: number;
+  currencyId: number;
+  balance: number;
+  balancePercentage: number;
 }
 
 export interface UserBalanceInstance
@@ -21,11 +23,14 @@ export type UserBalanceStatic = typeof Model & {
 export function UserBalanceFactory(sequelize: Sequelize): UserBalanceStatic {
   return <UserBalanceStatic>sequelize.define('user_balances', {
     balance: {
-      type: DataTypes.INTEGER,
-      field: 'manufacturingPeriodId',
+      type: DataTypes.FLOAT,
       allowNull: false,
       onDelete: 'NO ACTION',
       onUpdate: 'NO ACTION',
+    },
+    balancePercentage: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
   });
 }

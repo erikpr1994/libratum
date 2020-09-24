@@ -1,30 +1,23 @@
-import Express, { Application } from 'express';
+import Express, { Application, json } from 'express';
 import { config } from 'dotenv';
 import { dbConfig } from './models';
 
 import router from './router';
 
 config();
-const { PORT, ENVIRONMENT } = process.env;
+const { PORT } = process.env;
 
-if (ENVIRONMENT === 'TEST') {
-  dbConfig
-    .sync({ force: true })
-    .then(() => {})
-    .catch((error) => {
-      throw new Error(error);
-    });
-} else {
-  dbConfig
-    .authenticate()
-    .then(() => {})
-    .catch((error) => {
-      throw new Error(error);
-    });
-}
+dbConfig
+  // .sync({ force: true })
+  .authenticate()
+  .then(() => {})
+  .catch((error) => {
+    throw new Error(error);
+  });
 
 const app: Application = Express();
 
+app.use(json());
 app.use(router);
 
 app.listen(PORT);

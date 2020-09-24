@@ -2,7 +2,8 @@ import * as sequelize from 'sequelize';
 
 import { UserFactory } from './user';
 import { CurrenciesFactory } from './currencies';
-import { UserBalanceFactory } from './UserBalances';
+import { UserBalanceFactory } from './userBalances';
+import { ApiKeyFactory } from './apiKeys';
 
 import { config } from 'dotenv';
 config();
@@ -27,6 +28,9 @@ export const dbConfig = new sequelize.Sequelize(dbName, dbUser, dbPassword, {
 export const Users = UserFactory(dbConfig);
 export const Currencies = CurrenciesFactory(dbConfig);
 export const UserBalances = UserBalanceFactory(dbConfig);
+export const ApiKeys = ApiKeyFactory(dbConfig);
 
 Currencies.belongsToMany(Users, { through: UserBalances });
 Users.belongsToMany(Currencies, { through: UserBalances });
+
+ApiKeys.belongsTo(Users);

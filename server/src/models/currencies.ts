@@ -2,6 +2,7 @@ import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
 export interface currencyAttributes {
   id: number;
+  code: string;
   name: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -23,9 +24,14 @@ export function CurrenciesFactory(sequelize: Sequelize): CurrencyStatic {
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    code: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: true,
       unique: true,
     },
     createdAt: {
