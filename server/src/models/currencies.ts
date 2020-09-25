@@ -4,6 +4,7 @@ export interface currencyAttributes {
   id: number;
   code: string;
   name: string;
+  availableToRebalance: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -33,6 +34,10 @@ export function CurrenciesFactory(sequelize: Sequelize): CurrencyStatic {
       type: DataTypes.STRING,
       allowNull: true,
       unique: true,
+    },
+    availableToRebalance: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,

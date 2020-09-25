@@ -1,23 +1,22 @@
-import { ReactNode } from "react";
-import { slide as Menu } from "react-burger-menu";
+import { ReactNode } from 'react';
 
-import Avatar from "../components/Avatar";
-import Logo from "./Logo";
-import Navigation from "./Navigation";
+import Avatar from '../Components/Avatar';
+import Logo from './Logo';
+import Navigation from './Navigation';
 
-import { colors } from "../styles/theme.js";
+import { colors } from '../styles/theme.js';
 
-type AppLayout = {
+type AppLayoutType = {
   children: ReactNode;
   logged: boolean;
 };
 
-export const AppLayout = ({ children, logged }: AppLayout) => {
-  const nav = ["Dashboard", "Balancer"];
+export const AppLayout = ({ children, logged }: AppLayoutType) => {
+  const nav = ['Dashboard', 'Balancer'];
   return (
     <div>
       <nav>
-        <Logo src={"logo/Original_Transparent.png"} alt="Libratum logo" />
+        <Logo src={'logo/Original_Transparent.png'} alt="Libratum logo" />
         <Navigation navigation={nav} logged={logged} />
         {logged && (
           <Avatar

@@ -26,9 +26,14 @@ const getCurrencies = async () => {
 
 const updateCurrency = async (currency: string) => {
   // TODO: Add a try catch
+  let availableToRebalance = true;
+  if (currency.startsWith('LD')) {
+    availableToRebalance = false;
+  }
   return Currencies.findOrCreate<CurrenciesModel>({
     where: {
       code: currency,
+      availableToRebalance,
     },
   });
 };
@@ -38,9 +43,14 @@ const updateCurrencies = async (balances: object) => {
   return Object.entries(balances).forEach(
     (currency: [key: string, value: any]) => {
       const [key] = currency;
+      let availableToRebalance = true;
+      if (key.startsWith('LD')) {
+        availableToRebalance = false;
+      }
       return Currencies.findOrCreate<CurrenciesModel>({
         where: {
           code: key,
+          availableToRebalance,
         },
       });
     }

@@ -1,14 +1,12 @@
-import { AppProps } from "next/app";
-import Head from "next/head";
-import { useEffect } from "react";
-import Router from "next/router";
+import { AppProps } from 'next/app';
+import Head from 'next/head';
 
-import AppLayout from "../Layout";
+import AppLayout from '../Layout';
 
-import "../styles/globals.css";
+import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
-  let logged = true;
+  const logged = true;
   return (
     <>
       <Head>

@@ -11,6 +11,7 @@ import binance from '../binanceApi';
 import { getApiKeys } from './user';
 
 import currenciesController from './currencies';
+import currenciesConverter from './currenciesConverter';
 
 const getBalances = async (userId: number) => {
   const query = literal('balance > 0');
@@ -51,17 +52,43 @@ const updateBalance = async (
   currencyId: number,
   balance: number,
   userId: number,
+  totalInBTC: number,
+  totalInEur: number,
   balancePercentage: number | null = null
 ) => {
   try {
-    return UserBalances.findOrCreate<UserBalanceModel>({
+    const userBalance = await UserBalances.findOrCreate<UserBalanceModel>({
       where: {
         userId,
         currencyId,
         balance,
+        totalInBTC,
+        totalInEur,
         balancePercentage,
       },
     });
+
+    const [data, isNew] = userBalance;
+    const { balance: oldBalance } = data.get();
+
+    if (
+      (balance && oldBalance && oldBalance !== balance) ||
+      (isNew && oldBalance > 0)
+    ) {
+      if (!isNew) {
+        await UserBalances.update<UserBalanceModel>(
+          { balance, totalInBTC, totalInEur },
+          {
+            where: {
+              userId,
+              currencyId,
+            },
+          }
+        );
+
+        // calculateBalance(userId);
+      }
+    }
   } catch (e) {
     throw new Error(e);
   }
@@ -69,15 +96,17 @@ const updateBalance = async (
 
 const updateBalancePercentage = async (
   currency: CurrenciesModel,
+  userId: number,
   balancePercentage?: number
 ) => {
   // TODO: Add a try catch
   // TODO: Crear función para comprobar que el balancePercentage da 100% en total o controlar en frontend
-  return UserBalances.update(
+
+  UserBalances.update(
     { balancePercentage },
     {
       where: {
-        userId: 1, // TODO: Change userId to use the one coming from the request
+        userId,
         currencyId: currency.id,
       },
     }
@@ -86,6 +115,18 @@ const updateBalancePercentage = async (
 
 /* TODO New Feature: 
   Crear una función para calcular los nuevos balances cuando cambia una porcentage o hacerlo en el frontend 
+
+const calculateBalance = async (userId: number) => {
+  const balances = await getBalances(userId);
+  const newBalance = Object.entries(balances).map((data) => {
+    const { balance, balancePercentage, currencyId, userId } = data[1].get();
+    return { balance, balancePercentage, currencyId, userId };
+  });
+
+  newBalance.forEach((item) => {
+    console.log(item);
+  });
+};
 */
 
 const updateBalances = async (userId: number) => {
@@ -96,20 +137,20 @@ const updateBalances = async (userId: number) => {
       const { apiKey, secretKey } = data;
       const balance = await binance(apiKey, secretKey).balance();
 
-      return Object.entries(balance).forEach(async (item: any) => {
-        const balance = Number(item[1].available) + Number(item[1].onOrder);
+      Object.entries(balance).forEach(async (item: any) => {
+        const total = Number(item[1].available) + Number(item[1].onOrder);
+        const totalInBTC = currenciesConverter.convertToBTC();
+        const totalInEur = currenciesConverter.convertToEUR();
         const currency = item[0];
         currenciesController.updateCurrency(currency);
-        if (balance) {
-          const currencyType = await currenciesController.getCurrencyByCode(
-            currency
-          );
 
-          if (currencyType) {
-            const { id: currencyId } = currencyType.get();
-            updateBalance(currencyId, balance, userId);
-            return item;
-          }
+        const currencyType = await currenciesController.getCurrencyByCode(
+          currency
+        );
+
+        if (currencyType) {
+          const { id: currencyId } = currencyType.get();
+          updateBalance(currencyId, total, userId, totalInBTC, totalInEur);
         }
       });
     }

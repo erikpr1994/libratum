@@ -9,10 +9,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tanem/react-nprogress": "^3.0.44",
     "eslint-config-prettier": "^6.11.0",
     "next": "9.5.3",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-content-loader": "^5.1.2",
+    "react-dom": "16.13.1",
+    "react-spinners-css": "^1.2.2"
   },
   "devDependencies": {
     "@types/node": "^14.11.2",

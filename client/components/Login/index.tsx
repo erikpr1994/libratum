@@ -1,11 +1,9 @@
-import Button from "../Button";
-import InputText from "../Form/inputs/TextInput";
+import Button from '../Button';
+import InputText from '../Form/inputs/TextInput';
 
-import { colors, shadow } from "../../styles/theme.js";
+import { colors, shadow } from '../../styles/theme.js';
 
-type Login = {};
-
-export default function Login({}: Login) {
+export default function Login() {
   return (
     <>
       <div>
@@ -95,7 +93,7 @@ export default function Login({}: Login) {
         }
 
         .solid {
-          border-top: 3px solid ${colors["Vivid Sky Blue"]};
+          border-top: 3px solid ${colors['Vivid Sky Blue']};
           margin: 1em;
         }
 

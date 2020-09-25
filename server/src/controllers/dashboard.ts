@@ -5,12 +5,12 @@ import currenciesController from './currencies';
 
 export default async (req: Request, res: Response) => {
   // TODO: Add a try catch
-  const { userId } = req.body;
+  const { userId } = req.query;
 
-  await balanceController.updateBalances(userId);
+  await balanceController.updateBalances(Number(userId));
 
   const currencies = await currenciesController.getCurrencies();
-  const balances = await balanceController.getBalances(userId);
+  const balances = await balanceController.getBalances(Number(userId));
   res.send({
     balances,
     currencies,

@@ -4,7 +4,9 @@ export interface UserBalancesAttributes {
   userId: number;
   currencyId: number;
   balance: number;
-  balancePercentage: number;
+  totalInBTC?: number;
+  totalInEur?: number;
+  balancePercentage?: number;
 }
 
 export interface UserBalanceInstance
@@ -30,6 +32,14 @@ export function UserBalanceFactory(sequelize: Sequelize): UserBalanceStatic {
     },
     balancePercentage: {
       type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    totalInBTC: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    totalInEur: {
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
   });

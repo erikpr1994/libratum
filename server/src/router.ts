@@ -10,7 +10,7 @@ const router = Router();
 router.get('/login', loginController);
 router.get('/me', userController);
 router.get('/dashboard', dashboardController);
-router.route('/rebalance').get().post();
+router.post('/rebalance');
 
 router.get('/getBalance', balanceController.getBalance);
 

@@ -1,12 +1,7 @@
-import { useEffect } from "react";
-import Router from "next/router";
+import Container from '../Layout/Container';
+import Login from '../Components/Login';
 
-import Container from "../Layout/Container";
-import Login from "../components/Login";
-
-type Home = {};
-
-export default function Home({}: Home) {
+export default function Home() {
   return (
     <>
       <Container
@@ -16,7 +11,6 @@ export default function Home({}: Home) {
       >
         <Login />
       </Container>
-      <style jsx>{``}</style>
     </>
   );
 }

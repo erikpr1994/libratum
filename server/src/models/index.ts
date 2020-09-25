@@ -22,7 +22,7 @@ export const dbConfig = new sequelize.Sequelize(dbName, dbUser, dbPassword, {
     acquire: 30000,
     idle: 10000,
   },
-  logging: false,
+  logging: true,
 });
 
 export const Users = UserFactory(dbConfig);
