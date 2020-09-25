@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import Loader from 'Components/Loader';
-import Card from 'Components/card';
+import Loader from 'components/Loader';
+import Card from 'components/card';
 
 import Container from 'Layout/Container';
 
@@ -11,7 +11,7 @@ export default function Dashboard() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const url = `http://localhost:3001/dashboard?userId=${1}`;
+    const url = `http://192.168.8.124:3002/dashboard?userId=${1}`; // Llamar solo OnLogin
 
     fetch(url)
       .then((res) => res.json())
@@ -25,10 +25,20 @@ export default function Dashboard() {
   return (
     <>
       <div className="dashboard">
-        <Container widthPercentage={90} heightPercentage={90} isLoading={false}>
+        <Container
+          widthPercentage={90}
+          heightPercentage={70}
+          isLoading={false}
+          additionalCss={`grid-row: 1`}
+        >
           <p>Test</p>
         </Container>
-        <Container widthPercentage={90} heightPercentage={90} isLoading={false}>
+        <Container
+          widthPercentage={90}
+          heightPercentage={70}
+          isLoading={false}
+          additionalCss={`grid-row: 2 `}
+        >
           <p>Test 2</p>
         </Container>
         <Container
@@ -36,6 +46,7 @@ export default function Dashboard() {
           heightPercentage={90}
           isLoading={isLoading}
           title="holdings"
+          additionalCss={`grid-row: 3 / span 3; grid-column: 1`}
         >
           {isLoading ? (
             <div className="loader">
@@ -63,6 +74,14 @@ export default function Dashboard() {
             </div>
           )}
         </Container>
+        <Container
+          widthPercentage={90}
+          heightPercentage={95}
+          isLoading={false}
+          additionalCss={`grid-row: 1 / -1`}
+        >
+          <p>Test 3</p>
+        </Container>
       </div>
       <style jsx>{`
         .dashboard {
@@ -70,7 +89,7 @@ export default function Dashboard() {
           height: 100%;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-rows: repeat(5, minmax(100px, 1fr));
           justify-items: center;
           align-items: center;
         }

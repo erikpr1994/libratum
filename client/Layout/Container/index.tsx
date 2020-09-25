@@ -3,7 +3,7 @@ import { NProgress } from '@tanem/react-nprogress';
 
 import { shadow } from '../../styles/theme.js';
 
-import Bar from 'Components/Bar';
+import Bar from 'components/Bar';
 
 type ContainerType = {
   widthPercentage: number;
@@ -63,6 +63,7 @@ export default function Container({
           top: 0;
           background: white;
           z-index: 999;
+          text-transform: uppercase;
         }
 
         .children {

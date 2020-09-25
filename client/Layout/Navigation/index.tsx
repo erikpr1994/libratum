@@ -1,15 +1,28 @@
-import { colors } from "../../styles/theme.js";
+import { colors } from '../../styles/theme.js';
 
-type Navigation = {
+import { useRouter } from 'next/router';
+
+type NavigationType = {
   navigation: String[];
   logged: boolean;
 };
 
-export default function Navigation({ navigation, logged }: Navigation) {
+export default function Navigation({ navigation, logged }: NavigationType) {
+  const router = useRouter();
   return (
     <>
       <ul>
-        {logged && navigation.map((item, key) => <li key={key}>{item}</li>)}
+        {logged &&
+          navigation.map((item, key) => (
+            <li
+              key={key}
+              onClick={() => {
+                router.replace(`/${item}`);
+              }}
+            >
+              {item}
+            </li>
+          ))}
       </ul>
       <style jsx>{`
         ul {

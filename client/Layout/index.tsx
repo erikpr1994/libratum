@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Avatar from '../Components/Avatar';
+import Avatar from '../components/Avatar';
 import Logo from './Logo';
 import Navigation from './Navigation';
 
@@ -12,7 +12,7 @@ type AppLayoutType = {
 };
 
 export const AppLayout = ({ children, logged }: AppLayoutType) => {
-  const nav = ['Dashboard', 'Balancer'];
+  const nav = ['dashboard', 'balancer'];
   return (
     <div>
       <nav>

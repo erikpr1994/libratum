@@ -1,9 +1,15 @@
+import { useRouter } from 'next/router';
+
 import Button from '../Button';
 import InputText from '../Form/inputs/TextInput';
 
 import { colors, shadow } from '../../styles/theme.js';
 
-export default function Login() {
+export default function Login(click) {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/dashboard');
+  };
   return (
     <>
       <div>
@@ -17,7 +23,8 @@ export default function Login() {
                 width={160}
                 height={46}
                 color={colors.Charcoal}
-              ></Button>
+                onClick={handleClick}
+              />
             </section>
           </form>
           <hr className="solid" />
@@ -27,13 +34,16 @@ export default function Login() {
               width={160}
               height={46}
               color={colors.Charcoal}
+              onClick={click}
             />
+
             <Button
               name="Google"
               width={160}
               height={46}
               color={colors.Charcoal}
             />
+
             <Button
               name="Facebook"
               width={160}

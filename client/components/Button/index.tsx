@@ -1,20 +1,30 @@
-import { shadow, colors } from "../../styles/theme.js";
+import { useRouter } from 'next/router';
 
-type Button = {
+import { shadow, colors } from '../../styles/theme.js';
+
+type ButtonType = {
   name: string;
   width: number;
   height: number;
   color: string;
+  onClick?: Function;
 };
 
-export default function Button({ name, width, height, color }: Button) {
+export default function Button({
+  name,
+  width,
+  height,
+  color,
+  onClick,
+}: ButtonType) {
+  const router = useRouter();
   return (
     <>
-      <div>
+      <button onClick={() => router.replace(`/dashboard`)} id="test">
         <p>{name}</p>
-      </div>
+      </button>
       <style jsx>{`
-        div {
+        button {
           width: ${width}px;
           height: ${height}px;
           display: flex;
