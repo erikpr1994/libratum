@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import Avatar from '../components/Avatar';
+import Avatar from 'Components/Avatar';
 import Logo from './Logo';
 import Navigation from './Navigation';
 

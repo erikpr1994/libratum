@@ -99,18 +99,20 @@ const updateBalancePercentage = async (
   userId: number,
   balancePercentage?: number
 ) => {
-  // TODO: Add a try catch
   // TODO: Crear función para comprobar que el balancePercentage da 100% en total o controlar en frontend
-
-  UserBalances.update(
-    { balancePercentage },
-    {
-      where: {
-        userId,
-        currencyId: currency.id,
-      },
-    }
-  );
+  try {
+    UserBalances.update(
+      { balancePercentage },
+      {
+        where: {
+          userId,
+          currencyId: currency.id,
+        },
+      }
+    );
+  } catch (e) {
+    throw new Error(e);
+  }
 };
 
 /* TODO New Feature: 

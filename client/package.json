@@ -9,12 +9,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "@tanem/react-nprogress": "^3.0.44",
+    "@types/material-ui": "^0.21.8",
+    "dayjs": "^1.8.36",
     "eslint-config-prettier": "^6.11.0",
+    "fusioncharts": "^3.15.3",
     "next": "9.5.3",
     "react": "16.13.1",
     "react-content-loader": "^5.1.2",
     "react-dom": "16.13.1",
+    "react-fusioncharts": "^3.1.2",
     "react-spinners-css": "^1.2.2"
   },
   "devDependencies": {

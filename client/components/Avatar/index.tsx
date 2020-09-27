@@ -1,13 +1,13 @@
-type Avatar = {
+type AvatarType = {
   alt: string;
   src?: string;
-  text: string;
+  text?: string;
   height: number;
   width: number;
 };
 
-export default function Avatar({ alt, src, text, height, width }: Avatar) {
-  if (!src) src = "placeholder/avatar.png";
+export default function Avatar({ alt, src, text, height, width }: AvatarType) {
+  if (!src) src = 'placeholder/avatar.png';
   return (
     <>
       <div>
@@ -19,6 +19,7 @@ export default function Avatar({ alt, src, text, height, width }: Avatar) {
           display: flex;
           align-items: center;
           justify-content: flex-end;
+          height: 100%;
         }
 
         strong {

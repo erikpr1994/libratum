@@ -5,7 +5,7 @@ import { colors } from 'styles/theme';
 const Loader = (props) => (
   <ContentLoader
     viewBox="0 0 400 160"
-    height={160}
+    height={60}
     width={400}
     speed={2}
     backgroundColor={colors['Black Coral']}

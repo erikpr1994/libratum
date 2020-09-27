@@ -3,7 +3,7 @@ import { NProgress } from '@tanem/react-nprogress';
 
 import { shadow } from '../../styles/theme.js';
 
-import Bar from 'components/Bar';
+import Bar from 'Components/Bar';
 
 type ContainerType = {
   widthPercentage: number;
@@ -11,6 +11,7 @@ type ContainerType = {
   children: ReactNode;
   title?: string;
   additionalCss?: string;
+  additionalCssForChildren?: string;
   isLoading?: boolean;
 };
 
@@ -20,6 +21,7 @@ export default function Container({
   heightPercentage,
   additionalCss,
   title,
+  additionalCssForChildren,
   isLoading = false,
 }: ContainerType) {
   return (
@@ -32,11 +34,9 @@ export default function Container({
               isLoading={isLoading}
               animationDuration={animationDuration}
             />
-            {!isLoading && title && (
-              <article className="title-wrapper">
-                <h1>{title}</h1>
-              </article>
-            )}
+            <article className={title ? 'title-wrapper' : ''}>
+              {!isLoading && title && <h1>{title}</h1>}
+            </article>
             <article className="children">{children}</article>
           </div>
         )}
@@ -49,25 +49,26 @@ export default function Container({
           border-radius: 15px;
           background-color: white;
           border: none;
-          overflow: auto;
+          overflow: hidden;
           position: relative;
           display: grid;
           grid-template-columns: 1fr;
-          grid-template-rows: 0 1fr;
+          grid-template-rows: 0 ${title ? '60px' : 0} 1fr;
           ${additionalCss}
         }
 
         .title-wrapper {
-          padding: 1em 1em 1em 1em;
+          padding: 1em 1em 0 1em;
+          background: white;
+          text-transform: uppercase;
           position: sticky;
           top: 0;
-          background: white;
-          z-index: 999;
-          text-transform: uppercase;
         }
 
         .children {
           position: relative;
+          overflow: hidden;
+          ${additionalCssForChildren}
         }
       `}</style>
     </>

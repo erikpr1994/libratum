@@ -17,7 +17,7 @@ export default function Navigation({ navigation, logged }: NavigationType) {
             <li
               key={key}
               onClick={() => {
-                router.replace(`/${item}`);
+                router.push(`/${item}`);
               }}
             >
               {item}

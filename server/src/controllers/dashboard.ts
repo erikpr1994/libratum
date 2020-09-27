@@ -9,6 +9,7 @@ export default async (req: Request, res: Response) => {
 
   await balanceController.updateBalances(Number(userId));
 
+  // TODO: Return the currency data inside the balance (Possibly using GraphQL)
   const currencies = await currenciesController.getCurrencies();
   const balances = await balanceController.getBalances(Number(userId));
   res.send({
