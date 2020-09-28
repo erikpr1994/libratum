@@ -9,17 +9,17 @@ import router from './router';
 config();
 const { PORT } = process.env;
 
-dbConfig
-  .authenticate()
-  .then(() => {})
-  .catch((error) => {
-    throw new Error(error);
-  });
-
 const app: Application = Express();
 
 app.use(cors());
 app.use(json());
 app.use(router);
 
-app.listen(PORT);
+dbConfig
+  .authenticate()
+  .then(() => {
+    app.listen(PORT);
+  })
+  .catch((error) => {
+    throw new Error(error);
+  });
