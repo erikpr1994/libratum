@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { useContext } from 'react';
 
-import { loginContext } from 'hooks/loginProvider';
+import { loginContext } from '@hooks/useLogin';
 
 type NavigationType = {
   navigation: String[];

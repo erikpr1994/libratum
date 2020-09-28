@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { loginContext } from 'hooks/loginProvider';
+import { loginContext } from '@hooks/useLogin';
 
 type AvatarType = {
   alt: string;

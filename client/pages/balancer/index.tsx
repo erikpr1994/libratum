@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { balanceContext } from '@hooks/balanceProvider';
+import { balanceContext } from '@hooks/useBalance';
 
 export default function balancer() {
   const [balance, setBalance] = useContext(balanceContext);

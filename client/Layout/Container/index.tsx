@@ -1,9 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { NProgress } from '@tanem/react-nprogress';
 
 import { shadow } from '../../styles/theme.js';
 
 import Bar from 'Components/Bar';
+
+import { isLoadedContext } from 'hooks/useLoading';
 
 type ContainerType = {
   widthPercentage: number;
@@ -22,20 +24,21 @@ export default function Container({
   additionalCss,
   title,
   additionalCssForChildren,
-  isLoading = false,
 }: ContainerType) {
+  const loaded = useContext(isLoadedContext);
+
   return (
     <>
-      <NProgress isAnimating={isLoading} animationDuration={100}>
+      <NProgress isAnimating={!loaded} animationDuration={100}>
         {({ animationDuration, isFinished, progress }) => (
           <div className="container">
             <Bar
               progress={progress}
-              isLoading={isLoading}
+              isLoading={!loaded}
               animationDuration={animationDuration}
             />
             <article className={title ? 'title-wrapper' : ''}>
-              {!isLoading && title && <h1>{title}</h1>}
+              {loaded && title && <h1>{title}</h1>}
             </article>
             <article className="children">{children}</article>
           </div>

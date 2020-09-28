@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 
-import { BalanceProvider } from 'hooks/balanceProvider';
-import { LoginProvider } from 'hooks/loginProvider';
+import { BalanceProvider } from '@hooks/useBalance';
+import { LoginProvider } from '@hooks/useLogin';
+import { LoadingProvider } from '@hooks/useLoading';
 
 import Avatar from 'Components/Avatar';
 import Logo from './Logo';
@@ -17,25 +18,28 @@ export const AppLayout = ({ children }: AppLayoutType) => {
   const nav = ['dashboard', 'balancer'];
 
   return (
-    <LoginProvider>
-      <div>
-        <nav>
-          <Logo src={'logo/Original_Transparent.png'} alt="Libratum logo" />
-          <Navigation navigation={nav} />
-          {
-            <Avatar
-              alt="avatar"
-              src="logo/Original.png"
-              text="Erik Pastor"
-              width={80}
-              height={80}
-            />
-          }
-        </nav>
-        <BalanceProvider>
-          <main>{children}</main>
-        </BalanceProvider>
-      </div>
+    <BalanceProvider>
+      <LoadingProvider>
+        <LoginProvider>
+          <div>
+            <nav>
+              <Logo src={'logo/Original_Transparent.png'} alt="Libratum logo" />
+              <Navigation navigation={nav} />
+              {
+                <Avatar
+                  alt="avatar"
+                  src="logo/Original.png"
+                  text="Erik Pastor"
+                  width={80}
+                  height={80}
+                />
+              }
+            </nav>
+
+            <main>{children}</main>
+          </div>
+        </LoginProvider>
+      </LoadingProvider>
       <style jsx>{`
         div {
           height: 100%;
@@ -70,7 +74,7 @@ export const AppLayout = ({ children }: AppLayoutType) => {
           overflow: auto;
         }
       `}</style>
-    </LoginProvider>
+    </BalanceProvider>
   );
 };
 

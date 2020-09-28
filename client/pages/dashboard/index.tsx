@@ -9,7 +9,9 @@ import Avatar from 'Components/Avatar';
 
 import Container from 'Layout/Container';
 
-import { loginContext } from 'hooks/loginProvider';
+import { loginContext } from '@hooks/useLogin';
+
+import { isLoadedContext } from '@hooks/useLoading';
 
 const NoSSRComponent = dynamic(
   () => import('Components/chart/noSSRComponent'),
@@ -22,14 +24,20 @@ export default function Dashboard() {
   const router = useRouter();
   const logged = useContext(loginContext);
 
-  if (logged.logged === false && typeof window !== 'undefined') {
+  let isLogged;
+  if (typeof logged !== 'object') {
+    isLogged = logged;
+  } else {
+    isLogged = logged.logged;
+  }
+
+  if (!isLogged && typeof window !== 'undefined') {
     router.push('/');
   }
 
   // TODO: Refactor the state to use it globally in the frontend
-  const [balance, setBalance] = useState([]);
-  const [currencies, setCurrencies] = useState([]); // TODO: Use GraphQL in the server to return the currency data inside the balance
-  const [isLoading, setLoading] = useState(true);
+  const [currencies] = useState([]); // TODO: Use GraphQL in the server to return the currency data inside the balance
+  const loaded = useContext(isLoadedContext);
   const [date] = useState(new Date());
   const [funFact, setFunFact] = useState(null);
 
@@ -38,31 +46,14 @@ export default function Dashboard() {
   const YTDIncrease = 20;
 
   const getFunFact = () => {
-    return fetch('https://uselessfacts.jsph.pl/random.json?language=en')
-      .then((res) => res.json())
-      .then((response) => setFunFact(response.text));
+    if (isLogged)
+      return fetch('https://uselessfacts.jsph.pl/random.json?language=en')
+        .then((res) => res.json())
+        .then((response) => setFunFact(response.text));
   };
 
   useEffect(() => {
     getFunFact();
-  }, []);
-
-  useEffect(() => {
-    const url = `http://localhost:3001/dashboard?userId=${1}`; // Llamar solo OnLogin
-    if (!balance.length) {
-      fetch(url)
-        .then((res) => res.json())
-        .then((response) => {
-          setBalance(response.balances);
-          setCurrencies(response.currencies);
-          setLoading(false);
-        })
-        .catch((error) => {
-          throw new Error(error);
-        });
-    } else {
-      setLoading(false);
-    }
   }, []);
 
   return (
@@ -70,7 +61,7 @@ export default function Dashboard() {
       <Head>
         <title>Libratum dashboard</title>
       </Head>
-      {logged && (
+      {isLogged && (
         <div className="dashboard">
           <Container
             widthPercentage={90}
@@ -108,7 +99,7 @@ export default function Dashboard() {
             isLoading={false}
             additionalCss={`grid-row: 2;`}
           >
-            {isLoading ? (
+            {loaded === false ? (
               <div className="loader">
                 <Loader />
               </div>
@@ -144,11 +135,10 @@ export default function Dashboard() {
           <Container
             widthPercentage={90}
             heightPercentage={90}
-            isLoading={isLoading}
             title="holdings"
             additionalCss={`grid-row: 3 / span 3; grid-column: 1 `}
           >
-            {isLoading ? (
+            {loaded === false ? (
               <div className="loader">
                 <Loader />
               </div>
@@ -162,12 +152,12 @@ export default function Dashboard() {
             isLoading={false}
             additionalCss={`grid-row: 1 / -1`}
           >
-            {isLoading ? (
+            {loaded === false ? (
               <div className="loader">
                 <Loader />
               </div>
             ) : (
-              <NoSSRComponent data={balance} moreData={currencies} />
+              <NoSSRComponent moreData={currencies} />
             )}
           </Container>
         </div>

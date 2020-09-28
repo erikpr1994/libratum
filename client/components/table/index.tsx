@@ -8,7 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
+import { balanceContext } from 'hooks/useBalance';
 
 const columns = [
   { id: 'code', label: 'code', align: 'center' },
@@ -36,26 +38,7 @@ function createData(code, balance, value, total) {
   return { code, balance, value, total };
 }
 
-const rows = [
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
-];
+const rows = [];
 
 const useStyles = makeStyles({
   root: {
@@ -70,6 +53,8 @@ const useStyles = makeStyles({
 });
 
 export default function StickyHeadTable() {
+  const balance = useContext(balanceContext);
+
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -82,6 +67,14 @@ export default function StickyHeadTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  if (balance.length && !rows.length) {
+    balance.map((value, key) => {
+      rows.push(
+        createData(key, value.balance, value.totalInBTC, value.totalInEur)
+      );
+    });
+  }
 
   return (
     <Paper className={classes.root}>
@@ -122,6 +115,7 @@ export default function StickyHeadTable() {
           </TableBody>
         </Table>
       </TableContainer>
+
       <TablePagination
         rowsPerPageOptions={[5, 10, 20]}
         component="div"
