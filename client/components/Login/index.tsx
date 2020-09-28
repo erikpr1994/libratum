@@ -1,15 +1,14 @@
-import { useRouter } from 'next/router';
-
 import Button from '../Button';
 import InputText from '../Form/inputs/TextInput';
 
 import { colors, shadow } from '../../styles/theme.js';
 
-export default function Login(click) {
-  const router = useRouter();
-  const handleClick = () => {
-    router.push('/dashboard');
-  };
+import { loginContext } from 'hooks/loginProvider';
+import { useContext } from 'react';
+
+export default function Login() {
+  const { setLogged } = useContext(loginContext);
+
   return (
     <>
       <div>
@@ -23,25 +22,29 @@ export default function Login(click) {
                 width={160}
                 height={46}
                 color={colors.Charcoal}
-                onClick={handleClick}
               />
             </section>
           </form>
           <hr className="solid" />
-          <form className="login-buttons">
+          <form
+            className="login-buttons"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setLogged(true);
+            }}
+          >
             <Button
               name="Github"
               width={160}
               height={46}
               color={colors.Charcoal}
-              onClick={click}
             />
 
             <Button
               name="Google"
               width={160}
               height={46}
-              color={colors.Charcoal}
+              color={colors['Vivid Sky Blue']}
             />
 
             <Button

@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import Loader from 'Components/Loader';
 import Table from 'Components/table';
 import Avatar from 'Components/Avatar';
 
 import Container from 'Layout/Container';
+
+import { loginContext } from 'hooks/loginProvider';
 
 const NoSSRComponent = dynamic(
   () => import('Components/chart/noSSRComponent'),
@@ -16,6 +19,13 @@ const NoSSRComponent = dynamic(
 );
 
 export default function Dashboard() {
+  const router = useRouter();
+  const logged = useContext(loginContext);
+
+  if (logged.logged === false && typeof window !== 'undefined') {
+    router.push('/');
+  }
+
   // TODO: Refactor the state to use it globally in the frontend
   const [balance, setBalance] = useState([]);
   const [currencies, setCurrencies] = useState([]); // TODO: Use GraphQL in the server to return the currency data inside the balance
@@ -60,106 +70,108 @@ export default function Dashboard() {
       <Head>
         <title>Libratum dashboard</title>
       </Head>
-      <div className="dashboard">
-        <Container
-          widthPercentage={90}
-          heightPercentage={70}
-          isLoading={false}
-          additionalCss={`grid-row: 1; 
+      {logged && (
+        <div className="dashboard">
+          <Container
+            widthPercentage={90}
+            heightPercentage={70}
+            isLoading={false}
+            additionalCss={`grid-row: 1; 
           background: transparent; box-shadow: none`}
-        >
-          <div className="welcome">
-            <Avatar alt="avatar" height={60} width={60} />
-            <div>
-              <h2>Welcome Erik!</h2>
-              <p className="date">{`${date.toLocaleString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}`}</p>
+          >
+            <div className="welcome">
+              <Avatar alt="avatar" height={60} width={60} />
+              <div>
+                <h2>Welcome Erik!</h2>
+                <p className="date">{`${date.toLocaleString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}`}</p>
+              </div>
+              {!funFact ? (
+                <div className="loader">
+                  <Loader />
+                </div>
+              ) : (
+                <div className="funFact">
+                  <h2>Did you know...</h2>
+                  <p>{funFact}</p>
+                </div>
+              )}
             </div>
-            {!funFact ? (
+          </Container>
+          <Container
+            widthPercentage={90}
+            heightPercentage={70}
+            isLoading={false}
+            additionalCss={`grid-row: 2;`}
+          >
+            {isLoading ? (
               <div className="loader">
                 <Loader />
               </div>
             ) : (
-              <div className="funFact">
-                <h2>Did you know...</h2>
-                <p>{funFact}</p>
+              <div className="realized">
+                <div className="second-container">
+                  <h2>24h increase</h2>
+                  {dayIncrease >= 0 ? (
+                    <p className="green">{dayIncrease}%</p>
+                  ) : (
+                    <p className="red">{dayIncrease}%</p>
+                  )}
+                </div>
+                <div className="second-container">
+                  <h2>Month increase</h2>
+                  {monthIncrease >= 0 ? (
+                    <p className="green">{monthIncrease}%</p>
+                  ) : (
+                    <p className="red">{monthIncrease}%</p>
+                  )}
+                </div>
+                <div className="second-container">
+                  <h2>YTD increase</h2>
+                  {YTDIncrease >= 0 ? (
+                    <p className="green">{YTDIncrease}%</p>
+                  ) : (
+                    <p className="red">{YTDIncrease}%</p>
+                  )}
+                </div>
               </div>
             )}
-          </div>
-        </Container>
-        <Container
-          widthPercentage={90}
-          heightPercentage={70}
-          isLoading={false}
-          additionalCss={`grid-row: 2;`}
-        >
-          {isLoading ? (
-            <div className="loader">
-              <Loader />
-            </div>
-          ) : (
-            <div className="realized">
-              <div className="second-container">
-                <h2>24h increase</h2>
-                {dayIncrease >= 0 ? (
-                  <p className="green">{dayIncrease}%</p>
-                ) : (
-                  <p className="red">{dayIncrease}%</p>
-                )}
+          </Container>
+          <Container
+            widthPercentage={90}
+            heightPercentage={90}
+            isLoading={isLoading}
+            title="holdings"
+            additionalCss={`grid-row: 3 / span 3; grid-column: 1 `}
+          >
+            {isLoading ? (
+              <div className="loader">
+                <Loader />
               </div>
-              <div className="second-container">
-                <h2>Month increase</h2>
-                {monthIncrease >= 0 ? (
-                  <p className="green">{monthIncrease}%</p>
-                ) : (
-                  <p className="red">{monthIncrease}%</p>
-                )}
+            ) : (
+              <Table />
+            )}
+          </Container>
+          <Container
+            widthPercentage={90}
+            heightPercentage={95}
+            isLoading={false}
+            additionalCss={`grid-row: 1 / -1`}
+          >
+            {isLoading ? (
+              <div className="loader">
+                <Loader />
               </div>
-              <div className="second-container">
-                <h2>YTD increase</h2>
-                {YTDIncrease >= 0 ? (
-                  <p className="green">{YTDIncrease}%</p>
-                ) : (
-                  <p className="red">{YTDIncrease}%</p>
-                )}
-              </div>
-            </div>
-          )}
-        </Container>
-        <Container
-          widthPercentage={90}
-          heightPercentage={90}
-          isLoading={isLoading}
-          title="holdings"
-          additionalCss={`grid-row: 3 / span 3; grid-column: 1 `}
-        >
-          {isLoading ? (
-            <div className="loader">
-              <Loader />
-            </div>
-          ) : (
-            <Table />
-          )}
-        </Container>
-        <Container
-          widthPercentage={90}
-          heightPercentage={95}
-          isLoading={false}
-          additionalCss={`grid-row: 1 / -1`}
-        >
-          {isLoading ? (
-            <div className="loader">
-              <Loader />
-            </div>
-          ) : (
-            <NoSSRComponent data={balance} moreData={currencies} />
-          )}
-        </Container>
-      </div>
+            ) : (
+              <NoSSRComponent data={balance} moreData={currencies} />
+            )}
+          </Container>
+        </div>
+      )}
       <style jsx>{`
         .dashboard {
           width: 100vw;

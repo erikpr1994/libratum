@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 import { shadow, colors } from '../../styles/theme.js';
 
 type ButtonType = {
@@ -10,17 +8,10 @@ type ButtonType = {
   onClick?: Function;
 };
 
-export default function Button({
-  name,
-  width,
-  height,
-  color,
-  onClick,
-}: ButtonType) {
-  const router = useRouter();
+export default function Button({ name, width, height, color }: ButtonType) {
   return (
     <>
-      <button onClick={() => router.replace(`/dashboard`)} id="test">
+      <button>
         <p>{name}</p>
       </button>
       <style jsx>{`

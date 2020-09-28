@@ -2,17 +2,22 @@ import { colors } from '../../styles/theme.js';
 
 import { useRouter } from 'next/router';
 
+import { useContext } from 'react';
+
+import { loginContext } from 'hooks/loginProvider';
+
 type NavigationType = {
   navigation: String[];
-  logged: boolean;
 };
 
-export default function Navigation({ navigation, logged }: NavigationType) {
+export default function Navigation({ navigation }: NavigationType) {
   const router = useRouter();
+  const logged = useContext(loginContext);
+
   return (
     <>
       <ul>
-        {logged &&
+        {logged === true &&
           navigation.map((item, key) => (
             <li
               key={key}

@@ -1,5 +1,8 @@
 import { ReactNode } from 'react';
 
+import { BalanceProvider } from 'hooks/balanceProvider';
+import { LoginProvider } from 'hooks/loginProvider';
+
 import Avatar from 'Components/Avatar';
 import Logo from './Logo';
 import Navigation from './Navigation';
@@ -8,28 +11,31 @@ import { colors } from '../styles/theme.js';
 
 type AppLayoutType = {
   children: ReactNode;
-  logged: boolean;
 };
 
-export const AppLayout = ({ children, logged }: AppLayoutType) => {
+export const AppLayout = ({ children }: AppLayoutType) => {
   const nav = ['dashboard', 'balancer'];
-  return (
-    <div>
-      <nav>
-        <Logo src={'logo/Original_Transparent.png'} alt="Libratum logo" />
-        <Navigation navigation={nav} logged={logged} />
-        {logged && (
-          <Avatar
-            alt="avatar"
-            src="logo/Original.png"
-            text="Erik Pastor"
-            width={80}
-            height={80}
-          />
-        )}
-      </nav>
-      <main>{children}</main>
 
+  return (
+    <LoginProvider>
+      <div>
+        <nav>
+          <Logo src={'logo/Original_Transparent.png'} alt="Libratum logo" />
+          <Navigation navigation={nav} />
+          {
+            <Avatar
+              alt="avatar"
+              src="logo/Original.png"
+              text="Erik Pastor"
+              width={80}
+              height={80}
+            />
+          }
+        </nav>
+        <BalanceProvider>
+          <main>{children}</main>
+        </BalanceProvider>
+      </div>
       <style jsx>{`
         div {
           height: 100%;
@@ -64,7 +70,7 @@ export const AppLayout = ({ children, logged }: AppLayoutType) => {
           overflow: auto;
         }
       `}</style>
-    </div>
+    </LoginProvider>
   );
 };
 

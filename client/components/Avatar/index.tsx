@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import { loginContext } from 'hooks/loginProvider';
+
 type AvatarType = {
   alt: string;
   src?: string;
@@ -7,13 +10,18 @@ type AvatarType = {
 };
 
 export default function Avatar({ alt, src, text, height, width }: AvatarType) {
+  // TODO: Fix context bug -> logged is set as undefined when clicked on login
+  const { logged } = useContext(loginContext);
+
   if (!src) src = 'placeholder/avatar.png';
   return (
     <>
-      <div>
-        {text && <strong>{text}</strong>}
-        <img alt={alt} src={src} title={alt} />
-      </div>
+      {logged === undefined && (
+        <div>
+          {text && <strong>{text}</strong>}
+          <img alt={alt} src={src} title={alt} />
+        </div>
+      )}
       <style jsx>{`
         div {
           display: flex;
