@@ -66,8 +66,9 @@ export default function Container({
         }
 
         .children {
-          position: relative;
           overflow: hidden;
+          position: relative;
+
           ${additionalCssForChildren}
         }
       `}</style>

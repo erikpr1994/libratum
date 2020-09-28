@@ -11,25 +11,22 @@ import TableRow from '@material-ui/core/TableRow';
 import { useState } from 'react';
 
 const columns = [
-  { id: 'code', label: 'code', align: 'center', minWidth: 170 },
+  { id: 'code', label: 'code', align: 'center' },
   {
     id: 'balance',
     label: 'balance',
-    minWidth: 170,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: 'value',
     label: 'value',
-    minWidth: 170,
     align: 'center',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
     id: 'total',
     label: 'total',
-    minWidth: 170,
     align: 'center',
     format: (value) => value.toFixed(2),
   },
@@ -46,6 +43,18 @@ const rows = [
   createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
   createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
   createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
+  createData('Bitcoin', '0.453 BTC', '8659€', '3922.52€'),
 ];
 
 const useStyles = makeStyles({
@@ -55,7 +64,8 @@ const useStyles = makeStyles({
   },
   container: {
     overflow: 'scroll',
-    minHeight: 100,
+    width: '100%',
+    height: '90%',
   },
 });
 
@@ -113,7 +123,7 @@ export default function StickyHeadTable() {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 20]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
