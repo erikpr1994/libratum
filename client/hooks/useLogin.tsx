@@ -28,7 +28,9 @@ export function LoginProvider({ children }: BalanceProviderType) {
       fetch(url)
         .then((res) => res.json())
         .then((response) => {
-          setBalance(response.balances);
+          console.log(response);
+
+          setBalance(response);
           setLoaded(true);
         });
       setTimeout(() => router.push('/dashboard'), 1000);

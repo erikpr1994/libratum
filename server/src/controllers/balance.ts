@@ -11,30 +11,33 @@ import binance from '../binanceApi';
 import { getApiKeys } from './user';
 
 import currenciesController from './currencies';
-import currenciesConverter from './currenciesConverter';
 
 const getBalances = async (userId: number) => {
-  const query = literal('balance > 0');
+  try {
+    const query = literal('balance > 0');
 
-  const balance = await UserBalances.findAll<UserBalanceModel>({
-    where: {
-      userId: userId,
-      balance: query,
-    },
-  });
+    const balance = await UserBalances.findAll<UserBalanceModel>({
+      where: {
+        userId: userId,
+        balance: query,
+      },
+    });
 
-  return balance.map((item) => {
-    return item;
-  });
+    return balance.map((item) => {
+      return item;
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 const getBalance = async (req: Request, res: Response) => {
-  const userId: number = req.body.userId;
-  const currencyId: number = req.body.currencyId;
-  if (!userId || !currencyId) {
-    res.sendStatus(500);
-  }
   try {
+    const userId: number = req.body.userId;
+    const currencyId: number = req.body.currencyId;
+    if (!userId || !currencyId) {
+      res.sendStatus(500);
+    }
     const balance = await UserBalances.findOne<UserBalanceModel>({
       where: {
         userId,
@@ -44,53 +47,44 @@ const getBalance = async (req: Request, res: Response) => {
 
     res.send(balance);
   } catch (e) {
-    res.send(e);
+    res.send(e.message);
   }
 };
 
 const updateBalance = async (
   currencyId: number,
-  balance: number,
   userId: number,
+  balance: number,
   totalInBTC: number,
   totalInEur: number,
-  balancePercentage: number | null = null
+  value: number,
+  balancePercentage: number | undefined = undefined
 ) => {
   try {
-    const userBalance = await UserBalances.findOrCreate<UserBalanceModel>({
+    UserBalances.findOrCreate<UserBalanceModel>({
       where: {
         userId,
         currencyId,
-        balance,
-        totalInBTC,
-        totalInEur,
-        balancePercentage,
       },
     });
 
-    const [data, isNew] = userBalance;
-    const { balance: oldBalance } = data.get();
-
-    if (
-      (balance && oldBalance && oldBalance !== balance) ||
-      (isNew && oldBalance > 0)
-    ) {
-      if (!isNew) {
-        await UserBalances.update<UserBalanceModel>(
-          { balance, totalInBTC, totalInEur },
-          {
-            where: {
-              userId,
-              currencyId,
-            },
-          }
-        );
-
-        // calculateBalance(userId);
+    await UserBalances.update<UserBalanceModel>(
+      {
+        balance: balance,
+        totalInBTC: totalInBTC,
+        totalInEur: totalInEur,
+        value: value,
+        balancePercentage,
+      },
+      {
+        where: {
+          userId,
+          currencyId,
+        },
       }
-    }
+    );
   } catch (e) {
-    throw new Error(e);
+    throw new Error(e.message);
   }
 };
 
@@ -111,7 +105,7 @@ const updateBalancePercentage = async (
       }
     );
   } catch (e) {
-    throw new Error(e);
+    throw new Error(e.message);
   }
 };
 
@@ -138,11 +132,10 @@ const updateBalances = async (userId: number) => {
     if (data) {
       const { apiKey, secretKey } = data;
       const balance = await binance(apiKey, secretKey).balance();
+      const { BTCEUR } = await binance(apiKey, secretKey).prices(`BTCEUR`);
 
       Object.entries(balance).forEach(async (item: any) => {
         const total = Number(item[1].available) + Number(item[1].onOrder);
-        const totalInBTC = currenciesConverter.convertToBTC();
-        const totalInEur = currenciesConverter.convertToEUR();
         const currency = item[0];
         currenciesController.updateCurrency(currency);
 
@@ -151,14 +144,51 @@ const updateBalances = async (userId: number) => {
         );
 
         if (currencyType) {
-          const { id: currencyId } = currencyType.get();
-          updateBalance(currencyId, total, userId, totalInBTC, totalInEur);
+          let { id: currencyId, code } = currencyType.get();
+
+          if (code.startsWith('LD')) {
+            code = code.substring(2);
+          }
+
+          let pair = `${code}BTC`;
+          if (code === 'USDT') {
+            pair = `EUR${code}`;
+          }
+
+          const pairs = await binance(apiKey, secretKey)
+            .prices(pair)
+            .then((prices: any) => prices)
+            .catch(() => {});
+
+          let totalInBTC, totalInEur, value;
+          if (total > 0) {
+            if (pairs && pairs[`${pair}`] !== undefined) {
+              value = pairs[`${pair}`];
+              totalInBTC = total * value;
+              totalInEur = BTCEUR * totalInBTC;
+            }
+          }
+
+          if (code === 'USDT') {
+            totalInBTC = 0;
+            totalInEur = value * total;
+          }
+
+          if (!totalInBTC) totalInBTC = 0;
+          if (!totalInEur) totalInEur = 0;
+
+          updateBalance(
+            currencyId,
+            userId,
+            total,
+            totalInBTC,
+            totalInEur,
+            value
+          );
         }
       });
     }
-  } catch (e) {
-    throw new Error(e);
-  }
+  } catch (err) {}
 };
 
 export default {

@@ -19,10 +19,10 @@ export const dbConfig = new sequelize.Sequelize(dbName, dbUser, dbPassword, {
   pool: {
     min: 0,
     max: 5,
-    acquire: 30000,
-    idle: 10000,
+    acquire: 30000000,
+    idle: 10000000,
   },
-  logging: true,
+  logging: false,
 });
 
 export const Users = UserFactory(dbConfig);

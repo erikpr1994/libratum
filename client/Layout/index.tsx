@@ -28,7 +28,7 @@ export const AppLayout = ({ children }: AppLayoutType) => {
               {
                 <Avatar
                   alt="avatar"
-                  src="logo/Original.png"
+                  src="./avatar.jpg"
                   text="Erik Pastor"
                   width={80}
                   height={80}

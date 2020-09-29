@@ -2,59 +2,74 @@ import { CurrenciesModel } from 'src/models/currencies';
 import { Currencies } from '../models';
 
 const getCurrencyById = async (currencyId: number) => {
-  // TODO: Add a try catch
-  return await Currencies.findOne<CurrenciesModel>({
-    where: {
-      id: currencyId,
-    },
-  });
+  try {
+    return await Currencies.findOne<CurrenciesModel>({
+      where: {
+        id: currencyId,
+      },
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const getCurrencyByCode = async (currencyCode: string) => {
-  // TODO: Add a try catch
-  return await Currencies.findOne<CurrenciesModel>({
-    where: {
-      code: currencyCode,
-    },
-  });
+  try {
+    return await Currencies.findOne<CurrenciesModel>({
+      where: {
+        code: currencyCode,
+      },
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const getCurrencies = async () => {
-  // TODO: Add a try catch
-  return await Currencies.findAll<CurrenciesModel>();
+  try {
+    return await Currencies.findAll<CurrenciesModel>();
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const updateCurrency = async (currency: string) => {
-  // TODO: Add a try catch
-  let availableToRebalance = true;
-  if (currency.startsWith('LD')) {
-    availableToRebalance = false;
+  try {
+    let availableToRebalance = true;
+    if (currency.startsWith('LD')) {
+      availableToRebalance = false;
+    }
+    return Currencies.findOrCreate<CurrenciesModel>({
+      where: {
+        code: currency,
+        availableToRebalance,
+      },
+    });
+  } catch (error) {
+    throw new Error(error);
   }
-  return Currencies.findOrCreate<CurrenciesModel>({
-    where: {
-      code: currency,
-      availableToRebalance,
-    },
-  });
 };
 
 const updateCurrencies = async (balances: object) => {
-  // TODO: Add a try catch
-  return Object.entries(balances).forEach(
-    (currency: [key: string, value: any]) => {
-      const [key] = currency;
-      let availableToRebalance = true;
-      if (key.startsWith('LD')) {
-        availableToRebalance = false;
+  try {
+    return Object.entries(balances).forEach(
+      (currency: [key: string, value: any]) => {
+        const [key] = currency;
+        let availableToRebalance = true;
+        if (key.startsWith('LD')) {
+          availableToRebalance = false;
+        }
+        return Currencies.findOrCreate<CurrenciesModel>({
+          where: {
+            code: key,
+            availableToRebalance,
+          },
+        });
       }
-      return Currencies.findOrCreate<CurrenciesModel>({
-        where: {
-          code: key,
-          availableToRebalance,
-        },
-      });
-    }
-  );
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export default {

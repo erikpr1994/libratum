@@ -48,16 +48,18 @@ export default function chart(data) {
 
   return (
     <div>
-      {balance.length ? (
+      {balance.length && !chartData.length ? (
         <>
           {balance.map((value, key) => {
             chartData.push({
-              label: key.toString(),
-              value: value.balance.toString(),
+              label: value.code,
+              value: value.totalInEur,
             });
             chartConfigs.dataSource.data = chartData;
-            chartConfigs.dataSource.chart.defaultCenterLabel = `Total: ${(total +=
-              value.balance)}`;
+            total += value.balance;
+            chartConfigs.dataSource.chart.defaultCenterLabel = `Total: ${Math.round(
+              total
+            )} €`;
           }) && <ReactFC {...chartConfigs} />}
         </>
       ) : (

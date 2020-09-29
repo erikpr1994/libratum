@@ -4,8 +4,6 @@ const convertToBTC = () => {
 };
 
 const convertToEUR = () => {
-  // Pass => item: Object
-
   return 0;
 };
 

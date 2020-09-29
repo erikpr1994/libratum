@@ -3,10 +3,11 @@ import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 export interface UserBalancesAttributes {
   userId: number;
   currencyId: number;
-  balance: number;
+  balance?: number;
   totalInBTC?: number;
   totalInEur?: number;
   balancePercentage?: number;
+  value?: number;
 }
 
 export interface UserBalanceInstance
@@ -26,12 +27,10 @@ export function UserBalanceFactory(sequelize: Sequelize): UserBalanceStatic {
   return <UserBalanceStatic>sequelize.define('user_balances', {
     balance: {
       type: DataTypes.FLOAT,
-      allowNull: false,
-      onDelete: 'NO ACTION',
-      onUpdate: 'NO ACTION',
+      allowNull: true,
     },
     balancePercentage: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: true,
     },
     totalInBTC: {
@@ -39,6 +38,10 @@ export function UserBalanceFactory(sequelize: Sequelize): UserBalanceStatic {
       allowNull: true,
     },
     totalInEur: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    value: {
       type: DataTypes.FLOAT,
       allowNull: true,
     },

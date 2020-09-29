@@ -71,7 +71,7 @@ export default function Dashboard() {
           background: transparent; box-shadow: none`}
           >
             <div className="welcome">
-              <Avatar alt="avatar" height={60} width={60} />
+              <Avatar alt="avatar" height={60} width={60} src="./avatar.jpg" />
               <div>
                 <h2>Welcome Erik!</h2>
                 <p className="date">{`${date.toLocaleString('en-US', {

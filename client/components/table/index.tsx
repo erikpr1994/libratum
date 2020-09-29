@@ -18,13 +18,13 @@ const columns = [
     id: 'balance',
     label: 'balance',
     align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
+    format: (value) => value,
   },
   {
     id: 'value',
     label: 'value',
     align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
+    format: (value) => value,
   },
   {
     id: 'total',
@@ -71,7 +71,7 @@ export default function StickyHeadTable() {
   if (balance.length && !rows.length) {
     balance.map((value, key) => {
       rows.push(
-        createData(key, value.balance, value.totalInBTC, value.totalInEur)
+        createData(value.code, value.balance, value.value, value.totalInEur)
       );
     });
   }

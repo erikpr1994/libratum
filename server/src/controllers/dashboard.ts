@@ -4,16 +4,30 @@ import balanceController from './balance';
 import currenciesController from './currencies';
 
 export default async (req: Request, res: Response) => {
-  // TODO: Add a try catch
-  const { userId } = req.query;
+  try {
+    const { userId } = req.query;
 
-  await balanceController.updateBalances(Number(userId));
+    await balanceController.updateBalances(Number(userId));
 
-  // TODO: Return the currency data inside the balance (Possibly using GraphQL)
-  const currencies = await currenciesController.getCurrencies();
-  const balances = await balanceController.getBalances(Number(userId));
-  res.send({
-    balances,
-    currencies,
-  });
+    // TODO: Return the currency data inside the balance (Possibly using GraphQL)
+    await balanceController.getBalances(Number(userId)).then((balance) => {
+      const balances = Object.entries(balance).map(async (data) => {
+        const newData = data[1].get();
+
+        const currencyData = await currenciesController.getCurrencyById(
+          newData.currencyId
+        );
+
+        const currency = currencyData?.get();
+
+        const returnData = { ...newData, ...currency };
+
+        return returnData;
+      });
+
+      Promise.all(balances).then((data) => res.send(data));
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
 };
