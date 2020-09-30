@@ -30,9 +30,11 @@ Data is coming from Binance API (https://binance-docs.github.io/apidocs/spot/en/
 
 ## Possible features
 
+- Refactor the code to have it ready for production
 - Login with Firebase or Auth0 and implement the database in postgresql using sequelize
 - Add tests to the backend
 - Mobile version
+- Add the ability to select a percentage range for the rebalance
 - Min limit amount per coin
 - Calculate the winnings/losses % of the coin with a predefined currency (Eur, usd)
 - Add a history of the rebalances
