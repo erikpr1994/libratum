@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import Bar from 'Components/Bar';
+
 import { BalanceProvider } from '@hooks/useBalance';
 import { LoginProvider } from '@hooks/useLogin';
 import { LoadingProvider } from '@hooks/useLoading';
@@ -36,7 +38,9 @@ export const AppLayout = ({ children }: AppLayoutType) => {
               }
             </nav>
 
-            <main>{children}</main>
+            <Bar>
+              <main>{children}</main>
+            </Bar>
           </div>
         </LoginProvider>
       </LoadingProvider>

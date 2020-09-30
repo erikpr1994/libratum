@@ -22,14 +22,12 @@ export function LoginProvider({ children }: BalanceProviderType) {
   const { setLoaded } = useContext(isLoadedContext);
   const router = useRouter();
   const setLogged = (login) => {
-    setState(login);
+    setState({ logged: login, setLogged });
     setLoaded(false);
     if (login === true) {
       fetch(url)
         .then((res) => res.json())
         .then((response) => {
-          console.log(response);
-
           setBalance(response);
           setLoaded(true);
         });

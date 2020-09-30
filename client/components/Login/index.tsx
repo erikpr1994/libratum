@@ -44,7 +44,7 @@ export default function Login() {
               name="Google"
               width={160}
               height={46}
-              color={colors['Vivid Sky Blue']}
+              color={colors.Charcoal}
             />
 
             <Button
@@ -55,7 +55,9 @@ export default function Login() {
             />
           </form>
         </section>
-        <section className="presentation"></section>
+        <section className="presentation">
+          <h2>Automating your cryptocurrencies has never been easier</h2>
+        </section>
       </div>
       <style jsx>{`
         div {
@@ -117,9 +119,23 @@ export default function Login() {
         }
 
         .presentation {
-          background: ${colors.Charcoal};
+          background: rgb(221, 117, 150);
+          background: linear-gradient(
+            218deg,
+            rgba(221, 117, 150, 1) 0%,
+            rgba(53, 192, 237, 1) 100%
+          );
           border-radius: 0 15px 15px 0;
           box-shadow: ${shadow};
+          color: white;
+          display: flex;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+          text-transform: uppercase;
+          padding: 2em;
+          text-align: center;
+          font-size: 2em;
         }
       `}</style>
     </>

@@ -13,7 +13,7 @@ type LoadingProviderType = {
 
 export function LoadingProvider({ children }: LoadingProviderType) {
   const setLoaded = (loading) => {
-    setLoadingState(loading);
+    setLoadingState({ loaded: loading, setLoaded });
   };
 
   const initialLoadingState = { ...defaultLoadingContext, setLoaded };

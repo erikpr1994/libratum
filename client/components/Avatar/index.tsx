@@ -16,7 +16,7 @@ export default function Avatar({ alt, src, text, height, width }: AvatarType) {
   if (!src) src = 'placeholder/avatar.png';
   return (
     <>
-      {logged === undefined && (
+      {logged && (
         <div>
           {text && <strong>{text}</strong>}
           <img alt={alt} src={src} title={alt} />

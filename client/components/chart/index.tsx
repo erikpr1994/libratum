@@ -15,7 +15,7 @@ import { balanceContext } from 'hooks/useBalance';
 
 ReactFC.fcRoot(FusionCharts, doughnut2d, FusionTheme);
 
-const chartData = [];
+let chartData = [];
 
 const chartConfigs = {
   type: 'doughnut2d', // The chart type
@@ -42,28 +42,35 @@ const chartConfigs = {
   },
 };
 
-export default function chart(data) {
-  const balance = useContext(balanceContext);
+export default function chart() {
+  const { balance } = useContext(balanceContext);
   let total = 0;
+
+  const createChartData = () => {
+    chartData = [];
+    balance.map((value, key) => {
+      value.code = value.code.startsWith('LD')
+        ? `${value.code.substring(2)} (Lending)`
+        : value.code;
+      chartData.push({
+        label: value.code,
+        value: value.totalInEur,
+      });
+      chartConfigs.dataSource.data = chartData;
+      total += value.totalInEur;
+      chartConfigs.dataSource.chart.defaultCenterLabel = `Total: ${total.toFixed(
+        2
+      )} €`;
+    });
+    return <></>;
+  };
 
   return (
     <div>
-      {balance.length && !chartData.length ? (
-        <>
-          {balance.map((value, key) => {
-            chartData.push({
-              label: value.code,
-              value: value.totalInEur,
-            });
-            chartConfigs.dataSource.data = chartData;
-            total += value.balance;
-            chartConfigs.dataSource.chart.defaultCenterLabel = `Total: ${Math.round(
-              total
-            )} €`;
-          }) && <ReactFC {...chartConfigs} />}
-        </>
+      {balance.length ? (
+        createChartData() && <ReactFC {...chartConfigs} />
       ) : (
-        <div />
+        <div></div>
       )}
     </div>
   );

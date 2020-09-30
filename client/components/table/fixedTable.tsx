@@ -13,24 +13,24 @@ import { useState, useContext } from 'react';
 import { balanceContext } from 'hooks/useBalance';
 
 const columns = [
-  { id: 'code', label: 'code', align: 'center' },
+  { id: 'code', label: 'COIN', align: 'center' },
   {
     id: 'balance',
-    label: 'balance',
+    label: 'BALANCE',
     align: 'center',
     format: (value) => value,
   },
   {
     id: 'value',
-    label: 'value',
+    label: 'VALUE',
     align: 'center',
-    format: (value) => value,
+    format: (value) => `${value.toFixed(2)} €`,
   },
   {
     id: 'total',
-    label: 'total',
+    label: 'TOTAL',
     align: 'center',
-    format: (value) => value.toFixed(2),
+    format: (value) => `${value.toFixed(2)} €`,
   },
 ];
 
@@ -38,7 +38,7 @@ function createData(code, balance, value, total) {
   return { code, balance, value, total };
 }
 
-const rows = [];
+let rows = [];
 
 const useStyles = makeStyles({
   root: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
 });
 
 export default function StickyHeadTable() {
-  const balance = useContext(balanceContext);
+  const { balance } = useContext(balanceContext);
 
   const classes = useStyles();
   const [page, setPage] = useState(0);
@@ -68,10 +68,21 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
-  if (balance.length && !rows.length) {
+  if (balance.length) {
+    rows = [];
     balance.map((value, key) => {
+      value.code = value.code.startsWith('LD')
+        ? `${value.code.substring(2)} (Lending)`
+        : value.code;
       rows.push(
-        createData(value.code, value.balance, value.value, value.totalInEur)
+        createData(
+          value.code,
+          `${(Math.round(value.balance * 100000000) / 100000000).toFixed(8)} ${
+            value.code
+          }`,
+          value.totalInEur / value.balance,
+          value.totalInEur
+        )
       );
     });
   }

@@ -10,9 +10,21 @@ type NavigationType = {
   navigation: String[];
 };
 
+var selectedStyle = {
+  borderBottom: '3px solid #35c0ed',
+  fontWeight: '600',
+};
+
+var pSelectedStyle = {
+  marginBottom: '-6px',
+};
+
 export default function Navigation({ navigation }: NavigationType) {
   const router = useRouter();
-  const logged = useContext(loginContext);
+  const { logged } = useContext(loginContext);
+
+  const href = router.pathname;
+  console.log(href);
 
   return (
     <>
@@ -21,11 +33,12 @@ export default function Navigation({ navigation }: NavigationType) {
           navigation.map((item, key) => (
             <li
               key={key}
+              style={href === `/${item}` ? selectedStyle : {}}
               onClick={() => {
                 router.push(`/${item}`);
               }}
             >
-              {item}
+              <p style={href === `/${item}` ? pSelectedStyle : {}}>{item}</p>
             </li>
           ))}
       </ul>
@@ -47,17 +60,14 @@ export default function Navigation({ navigation }: NavigationType) {
           place-items: center;
           place-content: center;
           height: 100%;
-          width: 100px;
+          width: 120px;
           text-transform: uppercase;
+          cursor: pointer;
         }
 
-        .selected {
-          border-bottom: 6px solid ${colors.Charcoal};
-        }
-
-        .selected p {
-          margin-bottom: -6px;
-          font-weight: 400;
+        ul li:hover {
+          background: ${colors['Vivid Sky Blue']};
+          color: white;
         }
       `}</style>
     </>

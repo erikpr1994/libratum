@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import Loader from 'Components/Loader';
-import Table from 'Components/table';
+import Table from 'Components/table/fixedTable';
 import Avatar from 'Components/Avatar';
 
 import Container from 'Layout/Container';
@@ -22,22 +22,13 @@ const NoSSRComponent = dynamic(
 
 export default function Dashboard() {
   const router = useRouter();
-  const logged = useContext(loginContext);
+  const { logged } = useContext(loginContext);
 
-  let isLogged;
-  if (typeof logged !== 'object') {
-    isLogged = logged;
-  } else {
-    isLogged = logged.logged;
-  }
-
-  if (!isLogged && typeof window !== 'undefined') {
+  if (!logged && typeof window !== 'undefined') {
     router.push('/');
   }
 
-  // TODO: Refactor the state to use it globally in the frontend
-  const [currencies] = useState([]); // TODO: Use GraphQL in the server to return the currency data inside the balance
-  const loaded = useContext(isLoadedContext);
+  const { loaded } = useContext(isLoadedContext);
   const [date] = useState(new Date());
   const [funFact, setFunFact] = useState(null);
 
@@ -46,7 +37,7 @@ export default function Dashboard() {
   const YTDIncrease = 20;
 
   const getFunFact = () => {
-    if (isLogged)
+    if (logged)
       return fetch('https://uselessfacts.jsph.pl/random.json?language=en')
         .then((res) => res.json())
         .then((response) => setFunFact(response.text));
@@ -59,9 +50,9 @@ export default function Dashboard() {
   return (
     <>
       <Head>
-        <title>Libratum dashboard</title>
+        <title>Libratum - Dashboard</title>
       </Head>
-      {isLogged && (
+      {logged && (
         <div className="dashboard">
           <Container
             widthPercentage={90}
@@ -157,7 +148,7 @@ export default function Dashboard() {
                 <Loader />
               </div>
             ) : (
-              <NoSSRComponent moreData={currencies} />
+              <NoSSRComponent />
             )}
           </Container>
         </div>

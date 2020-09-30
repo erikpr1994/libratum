@@ -1,9 +1,6 @@
 import { ReactNode, useContext } from 'react';
-import { NProgress } from '@tanem/react-nprogress';
 
 import { shadow } from '../../styles/theme.js';
-
-import Bar from 'Components/Bar';
 
 import { isLoadedContext } from 'hooks/useLoading';
 
@@ -25,25 +22,17 @@ export default function Container({
   title,
   additionalCssForChildren,
 }: ContainerType) {
-  const loaded = useContext(isLoadedContext);
+  const { loaded } = useContext(isLoadedContext);
 
   return (
     <>
-      <NProgress isAnimating={!loaded} animationDuration={100}>
-        {({ animationDuration, isFinished, progress }) => (
-          <div className="container">
-            <Bar
-              progress={progress}
-              isLoading={!loaded}
-              animationDuration={animationDuration}
-            />
-            <article className={title ? 'title-wrapper' : ''}>
-              {loaded && title && <h1>{title}</h1>}
-            </article>
-            <article className="children">{children}</article>
-          </div>
-        )}
-      </NProgress>
+      <div className="container">
+        <article className={title ? 'title-wrapper' : ''}>
+          {loaded && title && <h1>{title}</h1>}
+        </article>
+        <article className="children">{children}</article>
+      </div>
+
       <style jsx>{`
         .container {
           width: ${widthPercentage}%;
@@ -56,7 +45,7 @@ export default function Container({
           position: relative;
           display: grid;
           grid-template-columns: 1fr;
-          grid-template-rows: 0 ${title ? '60px' : 0} 1fr;
+          grid-template-rows: ${title ? '60px' : 0} 1fr;
           ${additionalCss}
         }
 

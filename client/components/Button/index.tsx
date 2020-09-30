@@ -26,6 +26,7 @@ export default function Button({ name, width, height, color }: ButtonType) {
           background: ${color};
           color: ${colors.white};
           cursor: pointer;
+          border: none;
         }
       `}</style>
     </>

@@ -1,9 +1,17 @@
-import { createContext, useState, ReactNode } from 'react';
+import {
+  createContext,
+  useState,
+  ReactNode,
+  SetStateAction,
+  Dispatch,
+} from 'react';
 
-const defaultBalanceContext = {
-  balance: [],
-  setBalance: (object) => {},
+type typeBalanceContext = {
+  balance?: any[];
+  setBalance?: Dispatch<SetStateAction<any[]>>;
 };
+
+const defaultBalanceContext: typeBalanceContext = {};
 
 export const balanceContext = createContext(defaultBalanceContext);
 
@@ -12,16 +20,10 @@ type BalanceProviderType = {
 };
 
 export function BalanceProvider({ children }: BalanceProviderType) {
-  const setBalance = (balance) => {
-    setBalanceState(balance);
-  };
-
-  const initialBalanceState = { ...defaultBalanceContext, setBalance };
-
-  const [balanceState, setBalanceState] = useState(initialBalanceState);
+  const [balance, setBalance] = useState<any[]>([]);
 
   return (
-    <balanceContext.Provider value={balanceState}>
+    <balanceContext.Provider value={{ balance, setBalance }}>
       {children}
     </balanceContext.Provider>
   );

@@ -1,22 +1,35 @@
-import PropTypes from 'prop-types';
+import { ReactNode, useContext } from 'react';
+
+import { NProgress } from '@tanem/react-nprogress';
+import { isLoadedContext } from '@hooks/useLoading';
+
 import Bar from './Bar';
 
-const Container = ({ isLoading, animationDuration, progress }) => (
-  <div
-    style={{
-      opacity: isLoading ? 1 : 0,
-      pointerEvents: 'none',
-      transition: `opacity ${animationDuration}ms linear`,
-    }}
-  >
-    <Bar progress={progress} animationDuration={animationDuration} />
-  </div>
-);
+type ContainerType = {
+  children: ReactNode;
+};
 
-Container.propTypes = {
-  animationDuration: PropTypes.number.isRequired,
-  progress: PropTypes.number.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+const Container = ({ children }: ContainerType) => {
+  const { loaded } = useContext(isLoadedContext);
+
+  return (
+    <NProgress isAnimating={!loaded} animationDuration={100}>
+      {({ animationDuration, progress }) => (
+        <main>
+          <div
+            style={{
+              opacity: !loaded ? 1 : 0,
+              pointerEvents: 'none',
+              transition: `opacity ${animationDuration}ms linear`,
+            }}
+          >
+            <Bar progress={progress} animationDuration={animationDuration} />
+          </div>
+          {children}
+        </main>
+      )}
+    </NProgress>
+  );
 };
 
 export default Container;

@@ -1,10 +1,8 @@
-import { shadow, colors } from "../../../../styles/theme.js";
-
-type TextInput = {
+type TextInputType = {
   label: string;
 };
 
-export default function TextInput({ label }: TextInput) {
+export default function TextInput({ label }: TextInputType) {
   return (
     <div>
       <label>{label}</label>
