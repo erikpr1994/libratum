@@ -15,7 +15,7 @@ type BalanceProviderType = {
   children: ReactNode;
 };
 
-const url = `http://localhost:3001/dashboard?userId=${1}`;
+const url = `http://192.168.1.225:3001/dashboard?userId=${1}`;
 
 export function LoginProvider({ children }: BalanceProviderType) {
   const { setBalance } = useContext(balanceContext);
