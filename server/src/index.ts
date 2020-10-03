@@ -19,6 +19,8 @@ dbConfig
   .authenticate()
   .then(() => {
     app.listen(PORT);
+    // eslint-disable-next-line no-console
+    console.log('Server running at http://localhost:3001');
   })
   .catch((error) => {
     throw new Error(error);

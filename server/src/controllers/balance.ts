@@ -191,7 +191,7 @@ const updateBalances = async (userId: number) => {
   } catch (err) {}
 };
 
-export default {
+export {
   getBalance,
   getBalances,
   updateBalance,
