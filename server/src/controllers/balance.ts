@@ -10,9 +10,9 @@ import binance from '../binanceApi';
 
 import { getApiKeys } from './user';
 
-import currenciesController from './currencies';
+import * as currenciesController from './currencies';
 
-const getBalances = async (userId: number) => {
+export const getBalances = async (userId: number) => {
   try {
     const query = literal('balance > 0');
 
@@ -31,7 +31,7 @@ const getBalances = async (userId: number) => {
   }
 };
 
-const getBalance = async (req: Request, res: Response) => {
+export const getBalance = async (req: Request, res: Response) => {
   try {
     const userId: number = req.body.userId;
     const currencyId: number = req.body.currencyId;
@@ -51,7 +51,7 @@ const getBalance = async (req: Request, res: Response) => {
   }
 };
 
-const updateBalance = async (
+export const updateBalance = async (
   currencyId: number,
   userId: number,
   balance: number,
@@ -88,7 +88,7 @@ const updateBalance = async (
   }
 };
 
-const updateBalancePercentage = async (
+export const updateBalancePercentage = async (
   currency: CurrenciesModel,
   userId: number,
   balancePercentage?: number
@@ -125,7 +125,7 @@ const calculateBalance = async (userId: number) => {
 };
 */
 
-const updateBalances = async (userId: number) => {
+export const updateBalances = async (userId: number) => {
   try {
     const response = await getApiKeys(userId);
     const data = response?.get();
@@ -189,12 +189,4 @@ const updateBalances = async (userId: number) => {
       });
     }
   } catch (err) {}
-};
-
-export {
-  getBalance,
-  getBalances,
-  updateBalance,
-  updateBalances,
-  updateBalancePercentage,
 };
