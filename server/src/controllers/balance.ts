@@ -23,15 +23,13 @@ export const getBalances = async (userId: number) => {
       },
     });
 
-    return balance.map((item) => {
-      return item;
-    });
+    return balance;
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
-export const getBalance = async (req: Request, res: Response) => {
+export const getBalance = async (req: Request, res: Response) => { // {body: userId:2, currencyId:1}
   try {
     const userId: number = req.body.userId;
     const currencyId: number = req.body.currencyId;
@@ -45,7 +43,7 @@ export const getBalance = async (req: Request, res: Response) => {
       },
     });
 
-    res.send(balance);
+   res.send(balance);
   } catch (e) {
     res.send(e.message);
   }
@@ -68,7 +66,7 @@ export const updateBalance = async (
       },
     });
 
-    await UserBalances.update<UserBalanceModel>(
+    const updatedBalance = await UserBalances.update<UserBalanceModel>(
       {
         balance: balance,
         totalInBTC: totalInBTC,
@@ -83,6 +81,8 @@ export const updateBalance = async (
         },
       }
     );
+
+    return updatedBalance;
   } catch (e) {
     throw new Error(e.message);
   }
@@ -125,10 +125,16 @@ const calculateBalance = async (userId: number) => {
 };
 */
 
+
+const getUserData = async (userId: number) => {
+  const response = await getApiKeys(userId);
+  const data = response?.get();
+  return data;
+}
+
 export const updateBalances = async (userId: number) => {
   try {
-    const response = await getApiKeys(userId);
-    const data = response?.get();
+    const data = await getUserData(userId);
     if (data) {
       const { apiKey, secretKey } = data;
       const balance = await binance(apiKey, secretKey).balance();

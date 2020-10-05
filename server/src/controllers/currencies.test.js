@@ -13,6 +13,7 @@ describe('', () => {
     });
   });
 });
+
 // test('should get currency by id', () => {
 //   const currency = {
 //     id: 1,

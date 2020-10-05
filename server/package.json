@@ -12,7 +12,9 @@
     "tsc": "tsc",
     "prod": "tsc && node ./dist/index.js",
     "debug": "tsc --sourcemap",
-    "test": "jest --coverage"
+    "test": "jest",
+    "test:coverage":"jest --coverage",
+    "test:watch":"jest --watch"
   },
   "keywords": [],
   "author": "",
