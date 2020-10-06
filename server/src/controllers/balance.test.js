@@ -2,7 +2,6 @@ import {
   getBalances,
   getBalance,
   updateBalance,
-  updateBalances,
 } from './balance';
 import { UserBalances } from '../models';
 

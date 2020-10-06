@@ -22,7 +22,6 @@ export const getBalances = async (userId: number) => {
         balance: query,
       },
     });
-
     return balance;
   } catch (err) {
     throw new Error(err.message);
@@ -129,16 +128,21 @@ const calculateBalance = async (userId: number) => {
 const getUserData = async (userId: number) => {
   const response = await getApiKeys(userId);
   const data = response?.get();
-  return data;
+  if (data) {
+    const { apiKey, secretKey } = data;
+    const balance = await binance(apiKey, secretKey).balance();
+    const { BTCEUR } = await binance(apiKey, secretKey).prices(`BTCEUR`);
+    return {balance, BTCEUR}
+  }
 }
+
+
 
 export const updateBalances = async (userId: number) => {
   try {
-    const data = await getUserData(userId);
-    if (data) {
-      const { apiKey, secretKey } = data;
-      const balance = await binance(apiKey, secretKey).balance();
-      const { BTCEUR } = await binance(apiKey, secretKey).prices(`BTCEUR`);
+    const res = await getUserData(userId);
+    if (res) {
+      const {balance, BTCEUR} = res;
 
       Object.entries(balance).forEach(async (item: any) => {
         const total = Number(item[1].available) + Number(item[1].onOrder);
