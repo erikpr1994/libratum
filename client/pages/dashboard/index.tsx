@@ -24,7 +24,7 @@ export default function Dashboard() {
   const router = useRouter();
   const { logged } = useContext(loginContext);
 
-  if (!logged && typeof window !== 'undefined') {
+  if (!logged && router && typeof window !== 'undefined') {
     router.push('/');
   }
 
