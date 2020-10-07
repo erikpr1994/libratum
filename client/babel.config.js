@@ -10,4 +10,12 @@ module.exports = {
     ],
     '@babel/preset-typescript',
   ],
+  env: {
+    test: {
+      presets: ['@babel/preset-env', '@babel/react', 'next/babel'],
+    },
+    development: {
+      presets: ['next/babel'],
+    },
+  },
 };

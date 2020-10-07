@@ -15,7 +15,7 @@ describe('Avatar component', () => {
 
   test('render correctly', () => {
     const testComponent = avatarComponent('alt', 50, 50);
-    expect(testComponent).toMatchSnapshot();
+    expect(testComponent.baseElement).toMatchSnapshot();
   });
 
   test('should show text', () => {

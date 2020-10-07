@@ -2,7 +2,7 @@ import { ReactNode, useContext } from 'react';
 
 import { shadow } from '../../styles/theme.js';
 
-import { isLoadedContext } from 'hooks/useLoading';
+import { isLoadedContext } from '../../hooks/useLoading';
 
 type ContainerType = {
   widthPercentage: number;
