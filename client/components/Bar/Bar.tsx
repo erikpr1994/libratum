@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { colors } from 'styles/theme';
+import { colors } from '../../styles/theme';
 
 const Bar = ({ progress, animationDuration }) => (
   <div

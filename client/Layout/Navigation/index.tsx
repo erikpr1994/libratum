@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { useContext } from 'react';
 
-import { loginContext } from '@hooks/useLogin';
+import { loginContext } from '../../hooks/useLogin';
 
 type NavigationType = {
   navigation: String[];
@@ -23,7 +23,7 @@ export default function Navigation({ navigation }: NavigationType) {
   const router = useRouter();
   const { logged } = useContext(loginContext);
 
-  const href = router.pathname;
+  const href = router && router.pathname;
   console.log(href);
 
   return (

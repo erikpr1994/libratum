@@ -1,5 +1,5 @@
 import Container from '../Layout/Container';
-import Login from 'Components/Login';
+import Login from '../components/Login';
 
 export default function Home() {
   return (

@@ -5,19 +5,19 @@ import { useRouter } from 'next/router';
 
 import { rebalanceData } from 'mockData/';
 
-import Loader from 'Components/Loader';
+import Loader from '../../components/Loader';
 
 import Container from 'Layout/Container';
 
-import { loginContext } from '@hooks/useLogin';
-import { balanceContext } from 'hooks/useBalance';
-import { isLoadedContext } from '@hooks/useLoading';
-import Button from 'Components/Button';
-import { colors } from 'styles/theme';
+import { loginContext } from '../../hooks/useLogin';
+import { balanceContext } from '../../hooks/useBalance';
+import { isLoadedContext } from '../../hooks/useLoading';
+import Button from '../../components/Button';
+import { colors } from '../../styles/theme';
 import { Checkbox } from '@material-ui/core';
 
 const NoSSRComponent = dynamic(
-  () => import('Components/chart/noSSRComponent'),
+  () => import('../../components/chart/noSSRComponent'),
   {
     ssr: false,
   }

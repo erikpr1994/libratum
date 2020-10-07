@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 import { useState, useContext } from 'react';
 
-import { balanceContext } from 'hooks/useBalance';
+import { balanceContext } from '../../hooks/useBalance';
 
 const columns = [
   { id: 'code', label: 'COIN', align: 'center' },
