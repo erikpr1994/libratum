@@ -53,23 +53,29 @@ export default function Balancer() {
           </h2>
           <form>
             <article>
-              <label>Delete</label>
-              <Checkbox disabled={!value.availableToRebalance} />
+              <label htmlFor={`delete${value.code}`}>Delete</label>
+              <Checkbox
+                id={`delete${value.code}`}
+                disabled={!value.availableToRebalance}
+              />
+            </article>
+            <article>
+              <label htmlFor={`input${value.code}`}>Slider</label>
+              <input type={`input${value.code}`}></input>
             </article>
           </form>
           <style jsx>{`
             div {
               display: flex;
               flex-direction: column;
-              height: 100%;
+              min-height: 120px;
               justify-content: center;
               align-items: center;
-              gap: 1em;
             }
 
             form {
               display: flex;
-              gap: 1em;
+              flex-direction: column;
             }
 
             article {
@@ -180,13 +186,13 @@ export default function Balancer() {
         }
 
         .balancer {
-          overflow: auto;
+          overflow: scroll;
           display: grid;
           height: 100%;
           justify-content: center;
           align-items: center;
           grid-template-columns: repeat(2, 1fr);
-          grid-template-rows: repeat(auto-fit, minmax(80px, 1fr));
+          grid-template-rows: repeat(auto-fit, minmax(120px, 1fr));
         }
       `}</style>
     </>
