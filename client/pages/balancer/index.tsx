@@ -59,10 +59,6 @@ export default function Balancer() {
                 disabled={!value.availableToRebalance}
               />
             </article>
-            <article>
-              <label htmlFor={`input${value.code}`}>Slider</label>
-              <input type={`input${value.code}`}></input>
-            </article>
           </form>
           <style jsx>{`
             div {

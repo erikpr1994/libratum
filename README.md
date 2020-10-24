@@ -1,14 +1,16 @@
-## Libratum (balanced in latin)
-
-### Rebalance your crypto
-
+<p align="center">
+   <img src="./screenshots/logo.png" width="300">
+</p>
 
 Libratum helps you to rebalance your cryptos to have always the same percentage of each. 
 Let see an example! Imagine you want to have 50% of the total amount(in €) in each crypto, crypto A and crypto B. Crypto A cost 2€ and you have 5 coins and crypto B cost 3€ and you have 10 coins, the tool will sell crypto B to have more crypto A and comply with the % amount and you will have 10 A coins and 6,66 B coins.
 
 ## Screenshots
 
-
+<p align="center">
+  <img src="./screenshots/screenshot1.png">
+  <img src="./screenshots/screenshot2.png">
+</p> 
 
 ## Getting started
 Make sure you have [git](https://git-scm.com/) and [NodeJS](https://nodejs.org/es/) installed. We recommend to use [NVM](https://github.com/nvm-sh/nvm) to manage NodejS versions. 
