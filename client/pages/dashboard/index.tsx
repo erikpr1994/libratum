@@ -3,18 +3,18 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import Loader from 'Components/Loader';
-import Table from 'Components/table/fixedTable';
-import Avatar from 'Components/Avatar';
+import Loader from '../../components/Loader';
+import Table from '../../components/table/fixedTable';
+import Avatar from '../../components/Avatar';
 
-import Container from 'Layout/Container';
+import Container from '../../Layout/Container';
 
-import { loginContext } from '@hooks/useLogin';
+import { loginContext } from '../../hooks/useLogin';
 
-import { isLoadedContext } from '@hooks/useLoading';
+import { isLoadedContext } from '../../hooks/useLoading';
 
 const NoSSRComponent = dynamic(
-  () => import('Components/chart/noSSRComponent'),
+  () => import('../../components/chart/noSSRComponent'),
   {
     ssr: false,
   }
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const router = useRouter();
   const { logged } = useContext(loginContext);
 
-  if (!logged && typeof window !== 'undefined') {
+  if (!logged && router && typeof window !== 'undefined') {
     router.push('/');
   }
 

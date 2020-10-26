@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Avatar component render correctly 1`] = `
+<body>
+  <div />
+</body>
+`;

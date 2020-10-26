@@ -11,7 +11,7 @@ import doughnut2d from 'fusioncharts/fusioncharts.charts';
 import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 
 import { useContext } from 'react';
-import { balanceContext } from 'hooks/useBalance';
+import { balanceContext } from '../../hooks/useBalance';
 
 ReactFC.fcRoot(FusionCharts, doughnut2d, FusionTheme);
 

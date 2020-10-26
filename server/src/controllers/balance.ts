@@ -10,9 +10,9 @@ import binance from '../binanceApi';
 
 import { getApiKeys } from './user';
 
-import currenciesController from './currencies';
+import * as currenciesController from './currencies';
 
-const getBalances = async (userId: number) => {
+export const getBalances = async (userId: number) => {
   try {
     const query = literal('balance > 0');
 
@@ -22,16 +22,13 @@ const getBalances = async (userId: number) => {
         balance: query,
       },
     });
-
-    return balance.map((item) => {
-      return item;
-    });
+    return balance;
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
-const getBalance = async (req: Request, res: Response) => {
+export const getBalance = async (req: Request, res: Response) => { // {body: userId:2, currencyId:1}
   try {
     const userId: number = req.body.userId;
     const currencyId: number = req.body.currencyId;
@@ -45,13 +42,13 @@ const getBalance = async (req: Request, res: Response) => {
       },
     });
 
-    res.send(balance);
+   res.send(balance);
   } catch (e) {
     res.send(e.message);
   }
 };
 
-const updateBalance = async (
+export const updateBalance = async (
   currencyId: number,
   userId: number,
   balance: number,
@@ -68,7 +65,7 @@ const updateBalance = async (
       },
     });
 
-    await UserBalances.update<UserBalanceModel>(
+    const updatedBalance = await UserBalances.update<UserBalanceModel>(
       {
         balance: balance,
         totalInBTC: totalInBTC,
@@ -83,12 +80,14 @@ const updateBalance = async (
         },
       }
     );
+
+    return updatedBalance;
   } catch (e) {
     throw new Error(e.message);
   }
 };
 
-const updateBalancePercentage = async (
+export const updateBalancePercentage = async (
   currency: CurrenciesModel,
   userId: number,
   balancePercentage?: number
@@ -125,14 +124,25 @@ const calculateBalance = async (userId: number) => {
 };
 */
 
-const updateBalances = async (userId: number) => {
+
+const getUserData = async (userId: number) => {
+  const response = await getApiKeys(userId);
+  const data = response?.get();
+  if (data) {
+    const { apiKey, secretKey } = data;
+    const balance = await binance(apiKey, secretKey).balance();
+    const { BTCEUR } = await binance(apiKey, secretKey).prices(`BTCEUR`);
+    return {balance, BTCEUR}
+  }
+}
+
+
+
+export const updateBalances = async (userId: number) => {
   try {
-    const response = await getApiKeys(userId);
-    const data = response?.get();
-    if (data) {
-      const { apiKey, secretKey } = data;
-      const balance = await binance(apiKey, secretKey).balance();
-      const { BTCEUR } = await binance(apiKey, secretKey).prices(`BTCEUR`);
+    const res = await getUserData(userId);
+    if (res) {
+      const {balance, BTCEUR} = res;
 
       Object.entries(balance).forEach(async (item: any) => {
         const total = Number(item[1].available) + Number(item[1].onOrder);
@@ -189,12 +199,4 @@ const updateBalances = async (userId: number) => {
       });
     }
   } catch (err) {}
-};
-
-export default {
-  getBalance,
-  getBalances,
-  updateBalance,
-  updateBalances,
-  updateBalancePercentage,
 };

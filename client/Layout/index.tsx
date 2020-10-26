@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 
-import Bar from 'Components/Bar';
+import Bar from '../components/Bar';
 
-import { BalanceProvider } from '@hooks/useBalance';
-import { LoginProvider } from '@hooks/useLogin';
-import { LoadingProvider } from '@hooks/useLoading';
+import { BalanceProvider } from '../hooks/useBalance';
+import { LoginProvider } from '../hooks/useLogin';
+import { LoadingProvider } from '../hooks/useLoading';
 
-import Avatar from 'Components/Avatar';
+import Avatar from '../components/Avatar';
 import Logo from './Logo';
 import Navigation from './Navigation';
 

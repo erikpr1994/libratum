@@ -1,7 +1,7 @@
 import { CurrenciesModel } from 'src/models/currencies';
 import { Currencies } from '../models';
 
-const getCurrencyById = async (currencyId: number) => {
+export const getCurrencyById = async (currencyId: number) => {
   try {
     return await Currencies.findOne<CurrenciesModel>({
       where: {
@@ -13,7 +13,7 @@ const getCurrencyById = async (currencyId: number) => {
   }
 };
 
-const getCurrencyByCode = async (currencyCode: string) => {
+export const getCurrencyByCode = async (currencyCode: string) => {
   try {
     return await Currencies.findOne<CurrenciesModel>({
       where: {
@@ -25,7 +25,7 @@ const getCurrencyByCode = async (currencyCode: string) => {
   }
 };
 
-const getCurrencies = async () => {
+export const getCurrencies = async () => {
   try {
     return await Currencies.findAll<CurrenciesModel>();
   } catch (error) {
@@ -33,7 +33,7 @@ const getCurrencies = async () => {
   }
 };
 
-const updateCurrency = async (currency: string) => {
+export const updateCurrency = async (currency: string) => {
   try {
     let availableToRebalance = true;
     if (currency.startsWith('LD')) {
@@ -50,7 +50,7 @@ const updateCurrency = async (currency: string) => {
   }
 };
 
-const updateCurrencies = async (balances: object) => {
+export const updateCurrencies = async (balances: object) => {
   try {
     return Object.entries(balances).forEach(
       (currency: [key: string, value: any]) => {
@@ -74,8 +74,4 @@ const updateCurrencies = async (balances: object) => {
 
 export default {
   getCurrencyById,
-  getCurrencyByCode,
-  getCurrencies,
-  updateCurrency,
-  updateCurrencies,
 };
