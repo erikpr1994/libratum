@@ -3,7 +3,7 @@ import InputText from '../Form/inputs/TextInput';
 
 import { colors, shadow } from '../../styles/theme.js';
 
-import { loginContext } from '@hooks/useLogin';
+import { loginContext } from '../../hooks/useLogin';
 import { useContext } from 'react';
 
 export default function Login() {

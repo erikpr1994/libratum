@@ -1,7 +1,7 @@
 import { ReactNode, useContext } from 'react';
 
 import { NProgress } from '@tanem/react-nprogress';
-import { isLoadedContext } from '@hooks/useLoading';
+import { isLoadedContext } from '../../hooks/useLoading';
 
 import Bar from './Bar';
 

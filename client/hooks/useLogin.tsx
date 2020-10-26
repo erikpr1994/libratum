@@ -15,13 +15,14 @@ type BalanceProviderType = {
   children: ReactNode;
 };
 
-const url = `http://localhost:3001/dashboard?userId=${1}`;
+const url = `http://192.168.1.225:3001/dashboard?userId=${1}`;
 
 export function LoginProvider({ children }: BalanceProviderType) {
   const { setBalance } = useContext(balanceContext);
   const { setLoaded } = useContext(isLoadedContext);
   const router = useRouter();
   const setLogged = (login) => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setState({ logged: login, setLogged });
     setLoaded(false);
     if (login === true) {

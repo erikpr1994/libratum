@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
 
-import { colors } from 'styles/theme';
+import { colors } from '../../styles/theme';
 
 const Loader = (props) => (
   <ContentLoader
